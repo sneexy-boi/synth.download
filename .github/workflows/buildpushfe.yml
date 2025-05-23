@@ -1,0 +1,38 @@
+name: build and release chuckya-fe and akkoma-fe
+
+on:
+  schedule:
+    - cron:
+        "00 06 * * *"
+  push:
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      # checkout just so theres a working template github understands
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+      - run: corepack enable --install-directory $HOME/.local/bin
+
+      # compile masto-fe
+      - run: |
+          pwd
+
+      - id: tag_name
+        run: echo ::set-output name=tag_name::$(date +%Y.%m.%d).$(git rev-parse --short HEAD)
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag_name.outputs.tag_name }}
+          make_latest: true
+          files: |
+            masto-fe.zip
+            akkoma-fe.zip
