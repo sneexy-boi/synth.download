@@ -5,6 +5,7 @@ on:
     - cron:
         "00 06 * * *"
   push:
+  workflow_dispatch:
 
 jobs:
   tag:
