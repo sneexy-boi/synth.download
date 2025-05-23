@@ -25,11 +25,15 @@ jobs:
 
       - name: compile masto-fe
         run: |
-          git clone https://forged.synth.download/synth.download/Chuckya-fe-standalone.git
+          git clone https://forged.synth.download/synth.download/Chuckya-fe-standalone.git && chmod +x /home/runner/work/synth.download/synth.download/symlink.sh && cd Chuckya-fe-standalone
+          export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build:production
+          cd public && cp /home/runner/work/synth.download/synth.download/symlink.sh . && zip -r ../../masto-fe.zip .
 
       - name: compile akkoma-fe
         run: |
-          git clone https://forged.synth.download/synth.download/akkoma-fe.git
+          git clone https://forged.synth.download/synth.download/akkoma-fe.git && cd akkoma-fe
+          export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build
+          cd dist && zip -r ../../akkoma-fe.zip .
 
       - id: tag_name
         run: echo ::set-output name=tag_name::$(date +%Y.%m.%d).$(git rev-parse --short HEAD)
