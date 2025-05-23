@@ -12,7 +12,6 @@ jobs:
     permissions:
       contents: write
     steps:
-      # checkout just so theres a working template github understands
       - uses: actions/checkout@v4
         with:
           ref: main
@@ -20,16 +19,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: latest
-      - run: corepack enable --install-directory $HOME/.local/bin
-
-      # compile masto-fe
       - run: |
-          pwd
+          mkdir -p $HOME/.local/bin
+          corepack enable --install-directory $HOME/.local/bin
+
+      - name: compile masto-fe
+        run: |
+          git clone https://forged.synth.download/synth.download/Chuckya-fe-standalone.git
+
+      - name: compile akkoma-fe
+        run: |
+          git clone https://forged.synth.download/synth.download/akkoma-fe.git
 
       - id: tag_name
         run: echo ::set-output name=tag_name::$(date +%Y.%m.%d).$(git rev-parse --short HEAD)
 
-      - uses: softprops/action-gh-release@v2
+      - name: release
+        uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.tag_name.outputs.tag_name }}
           make_latest: true
