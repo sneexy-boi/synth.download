@@ -24,9 +24,15 @@ jobs:
           mkdir -p $HOME/.local/bin
           corepack enable --install-directory $HOME/.local/bin
 
+      - name: install python
+        run: |
+          sudo apt update
+          sudo apt install python3 python3-requests
+
       - name: compile akkoma-fe
         run: |
           git clone https://forged.synth.download/sd/akkoma-fe.git && cd akkoma-fe
+          cd tools && python3 download_ruffle.py && cd ../
           export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && npx --yes update-browserslist-db@latest && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build
           cd dist && zip -r ../../akkoma-fe.zip .
 
