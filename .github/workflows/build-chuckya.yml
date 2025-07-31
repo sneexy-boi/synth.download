@@ -30,12 +30,9 @@ jobs:
           export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && npx --yes update-browserslist-db@latest && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build:production
           cd public && cp /home/runner/work/synth.download/synth.download/symlink.sh . && zip -r ../../masto-fe.zip .
 
-      - id: tag_name
-        run: echo ::set-output name=tag_name::$(date +%Y.%m.%d).$(git rev-parse --short HEAD)
-
       - name: release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.tag_name.outputs.tag_name }}
+          tag_name: fedi-frontend
           make_latest: true
           files: masto-fe.zip
