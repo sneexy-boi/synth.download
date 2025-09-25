@@ -32,7 +32,6 @@ jobs:
       - name: compile akkoma-fe
         run: |
           git clone https://forged.synth.download/sd/akkoma-fe-chuckya.git && cd akkoma-fe-chuckya
-          cd tools && python3 download_ruffle.py && cd ../
           export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && npx --yes update-browserslist-db@latest && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build
           cd dist && zip -r ../../akkoma-fe-chuckya.zip .
 
