@@ -1,4 +1,4 @@
-name: build and release chuckya-fe
+name: build and release chuckya-fe for iceshrimp
 
 on:
   schedule:
@@ -26,13 +26,13 @@ jobs:
 
       - name: compile masto-fe
         run: |
-          git clone https://forged.synth.download/sd/Chuckya-fe-standalone.git && chmod +x /home/runner/work/synth.download/synth.download/symlink.sh && cd Chuckya-fe-standalone
+          git clone https://forged.synth.download/sd/chuckya-fe-standalone.git && chmod +x /home/runner/work/synth.download/synth.download/symlink.sh && cd chuckya-fe-standalone
           export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && npx --yes update-browserslist-db@latest && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build:production
-          cd public && cp /home/runner/work/synth.download/synth.download/symlink.sh . && zip -r ../../masto-fe.zip .
+          cd public && cp /home/runner/work/synth.download/synth.download/symlink.sh . && zip -r ../../masto-fe-is.zip .
 
       - name: release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: fedi-frontend
           make_latest: true
-          files: masto-fe.zip
+          files: chuckya-fe.zip

@@ -1,4 +1,4 @@
-name: build and release akkoma-fe
+name: build and release akkoma-fe for chuckya
 
 on:
   schedule:
@@ -31,14 +31,14 @@ jobs:
 
       - name: compile akkoma-fe
         run: |
-          git clone https://forged.synth.download/sd/akkoma-fe.git && cd akkoma-fe
+          git clone https://forged.synth.download/sd/akkoma-fe-chuckya.git && cd akkoma-fe-chuckya
           cd tools && python3 download_ruffle.py && cd ../
           export COREPACK_ENABLE_DOWNLOAD_PROMPT=0 && npx --yes update-browserslist-db@latest && $HOME/.local/bin/yarn && $HOME/.local/bin/yarn build
-          cd dist && zip -r ../../akkoma-fe.zip .
+          cd dist && zip -r ../../akkoma-fe-chuckya.zip .
 
       - name: release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: fedi-frontend
           make_latest: true
-          files: akkoma-fe.zip
+          files: akkoma-fe-chuckya.zip
